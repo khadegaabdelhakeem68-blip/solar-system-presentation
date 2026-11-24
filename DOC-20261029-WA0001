@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>رحلة علمية | الأرض والنظام الشمسي</title>
+<style>
+:root{--navy:#100b2b;--purple:#39205e;--purple2:#6d42a2;--teal:#39b7c5;--gold:#f4cf70;--cream:#fff8e8;--white:#fff;--ink:#21143b;--green:#4caf50;--red:#f44336}
+*{box-sizing:border-box;touch-action:manipulation}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;color:var(--white);background:#09091e}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+.deck{height:100dvh;width:100vw;position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 15%,#37205e 0,transparent 36%),radial-gradient(ellipse at 80% 80%,#123d63 0,transparent 40%),#080a20}
+.stars{position:absolute;inset:0;opacity:.65;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 70% 12%,#f4cf70,transparent),radial-gradient(2px 2px at 88% 55%,#8eeaff,transparent),radial-gradient(1px 1px at 32% 77%,#fff,transparent),radial-gradient(2px 2px at 57% 42%,#fff,transparent);background-size:200px 150px}
+
+.toolbar{display:none!important}
+.slide{display:none;position:absolute;inset:0;padding:50px 16px 85px;overflow-y:auto;overflow-x:hidden;animation:appear .25s ease}
+
+.slide.active{display:flex;flex-direction:column;justify-content:flex-start;align-items:center;overscroll-behavior:contain}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.slide-content-wrapper{width:100%;max-width:850px;margin:auto;display:flex;flex-direction:column;justify-content:center;padding-bottom:20px}
+
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(32px,7vw,58px);line-height:1.2;text-shadow:0 3px 0 #45278a,0 0 20px #8c65ff80;margin-bottom:12px}
+h2{font-size:clamp(22px,5vw,34px);margin-bottom:12px;color:var(--teal);text-align:center}
+p,li{font-size:clamp(16px,4vw,20px);line-height:1.7}
+
+.kicker{color:var(--gold);font-weight:bold;letter-spacing:.3px;font-size:16px;margin-bottom:6px;text-align:center}
+.subtitle{font-size:clamp(18px,4.5vw,24px);color:#e4d8ff}
+
+.cover{background:radial-gradient(ellipse at 15% 50%,#37205e 0,transparent 35%),radial-gradient(ellipse at 85% 20%,#123d63 0,transparent 32%),linear-gradient(145deg,#08091e,#171039 55%,#07162e);text-align:center;justify-content:center!important}
+.cover:before{content:"";position:absolute;width:min(90vw,550px);height:min(90vw,550px);border:1px dashed #6e65c666;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cover-content{position:relative;z-index:2;background:rgba(16, 11, 43, 0.88);border:1px solid #7160b0;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.5);backdrop-filter:blur(6px);max-width:520px;margin:auto;padding:24px 20px}
+.cover-planet{position:absolute;z-index:1;border-radius:50%;pointer-events:none;background-size:cover;background-position:center;box-shadow:0 0 25px rgba(143,186,255,0.3);animation:floatPlanet 4s ease-in-out infinite alternate}
+@keyframes floatPlanet{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.cover-planet.earth{width:clamp(80px,18vw,110px);height:clamp(80px,18vw,110px);left:5%;bottom:10%;background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg')}
+.cover-planet.saturn{width:clamp(75px,16vw,100px);height:clamp(75px,16vw,100px);right:5%;top:10%;background-image:url('https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg');animation-delay:1s}
+.cover-planet.mars{width:clamp(50px,12vw,75px);height:clamp(50px,12vw,75px);right:12%;bottom:12%;background-image:url('https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg');animation-delay:2s}
+
+.cta-btn{border:0;border-radius:999px;background:var(--gold);color:#24133c;font-weight:bold;padding:14px 32px;box-shadow:0 5px 0 #bd8c37;margin-top:14px;font-size:18px;width:100%;max-width:260px;transition:0.2s}
+.cta-btn:active{transform:scale(0.96)}
+
+.slide-foot{position:fixed;bottom:0;left:0;right:0;background:rgba(12, 10, 36, 0.95);border-top:1px solid #4e3b7e;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;z-index:10;backdrop-filter:blur(8px)}
+.foot-btn{border:1px solid #8570c5;background:#201447;color:white;border-radius:999px;padding:9px 20px;font-size:15px;font-weight:bold}
+.counter{color:#d7c9ff;font-size:15px;font-weight:bold}
+
+.panel{background:rgba(22, 15, 56, 0.88);border:1px solid #6550a4;border-radius:18px;padding:22px;margin-bottom:12px;box-shadow:0 8px 25px rgba(0,0,0,0.3)}
+.two-col{display:grid;grid-template-columns:1fr;gap:16px}
+.goals{display:grid;grid-template-columns:1fr;gap:14px}
+.goal{padding:20px 18px;border-radius:16px;background:linear-gradient(140deg,#21174b,#142f53);border:1px solid #51448c;font-size:clamp(18px, 4.5vw, 22px);line-height:1.7}
+
+.squares-grid{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:16px}
+.square-card{background:rgba(22, 15, 56, 0.9);border-radius:18px;padding:20px;border:1px solid #6550a4;min-height:165px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:clamp(16px, 1.8vw, 19px);box-shadow:0 6px 20px rgba(0,0,0,0.3);line-height:1.6}
+
+.solar-layout{display:grid;grid-template-columns:1fr;gap:16px;align-items:center;text-align:center}
+.sun{width:clamp(130px,28vw,170px);aspect-ratio:1;border-radius:50%;margin:auto;background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg');background-size:cover;background-position:center;box-shadow:0 0 40px rgba(255,154,53,0.75)}
+
+.category-card{background:rgba(22, 15, 56, 0.9);border-radius:20px;padding:22px;border:1px solid #6550a4;text-align:center}
+.category-planets-img{display:flex;justify-content:center;gap:12px;margin:14px 0}
+.cat-planet{width:clamp(65px,15vw,90px);height:clamp(65px,15vw,90px);border-radius:50%;background-size:cover;background-position:center;box-shadow:0 0 12px rgba(255,255,255,0.2)}
+
+/* تكبير كروت وصور الكواكب في شريحة اكتشف الكواكب */
+.planet-strip{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:16px;margin-top:12px}
+.planet-card{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 12px;border:1px solid #6551a3;border-radius:20px;background:rgba(20, 16, 54, 0.95);color:white;cursor:pointer;transition:.2s;box-shadow:0 6px 20px rgba(0,0,0,0.3)}
+.planet-card:active{transform:scale(0.96);border-color:var(--gold)}
+.planet{width:clamp(105px,26vw,140px);height:clamp(105px,26vw,140px);border-radius:50%;position:relative;display:block;background-size:cover;background-position:center;box-shadow:inset -8px -6px 14px rgba(0,0,0,0.7),0 0 20px rgba(156,191,255,0.3)}
+.grid-label{font-size:clamp(18px, 2.2vw, 22px);font-weight:bold;color:var(--gold)}
+
+/* تكبير وتوضيح خطوط شريحة الأنشطة */
+.activity-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.activity{padding:20px;border-radius:18px;background:#19123e;border:1px solid #63509a;box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+.activity h3{font-size:clamp(19px, 2.2vw, 23px);color:var(--gold);margin-bottom:8px}
+.activity p{font-size:clamp(17px, 2vw, 20px);margin-bottom:8px}
+select,input[type=text]{background:#fff;color:#21143b;border-radius:12px;border:2px solid #a38bd6;padding:12px;width:100%;font-size:clamp(17px, 2vw, 19px);margin-top:8px;font-weight:bold}
+.feedback{min-height:28px;font-weight:bold;margin-top:10px;font-size:clamp(16px, 1.9vw, 19px);line-height:1.5}
+
+/* تكبير وتوضيح خطوط شريحة التقويم */
+.quiz-q{padding:12px 0}
+.quiz-q p{font-size:clamp(18px, 2.2vw, 22px);margin-bottom:10px;line-height:1.6}
+.quiz-q label{display:block;margin:10px 0;font-size:clamp(17px, 2vw, 20px);cursor:pointer;font-weight:500}
+.quiz-q input[type=radio]{transform:scale(1.3);margin-left:8px;cursor:pointer}
+
+/* شريحة الخاتمة */
+.summary-list{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:16px;margin-top:8px}
+.summary-square{background:linear-gradient(145deg, #1b1745, #110c2c);border-radius:18px;padding:18px 14px;border:1px solid #614f9c;font-size:clamp(15px, 1.8vw, 18px);min-height:165px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,0.4);line-height:1.6;font-weight:bold;transition:0.3s}
+.summary-icon{font-size:clamp(36px, 4vw, 46px);margin-bottom:10px;display:block;filter:drop-shadow(0 0 8px rgba(244,207,112,0.3))}
+
+/* تكبير الكوكب والخطوط داخل النافذة المنبثقة للتفاصيل */
+.modal{display:none;position:fixed;inset:0;z-index:20;background:rgba(5, 5, 19, 0.93);align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex}
+.modal-box{position:relative;width:100%;max-width:480px;border-radius:24px;border:1.5px solid #8c76dc;background:radial-gradient(circle at 75% 20%,#283a68,#130d30 65%);display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.85);animation:popUp 0.25s ease-out}
+@keyframes popUp{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-planet{margin-bottom:16px}
+.modal-planet .planet{width:clamp(160px, 36vw, 210px);height:clamp(160px, 36vw, 210px);box-shadow:inset -12px -10px 20px rgba(0,0,0,0.7),0 0 35px rgba(140,186,255,0.45)}
+.modal-text h2{color:var(--gold);margin-bottom:10px;font-size:clamp(26px, 3vw, 32px);font-weight:bold}
+.modal-text p{font-size:clamp(17px, 2.2vw, 21px);line-height:1.7;font-weight:500}
+.close{position:absolute;top:12px;left:12px;border:0;border-radius:50%;width:40px;height:40px;background:rgba(255,255,255,0.2);color:white;font-size:22px;cursor:pointer}
+
+@media(min-width:768px){
+  .slide-content-wrapper{max-width:950px}
+  .planet-strip{grid-template-columns:repeat(4, minmax(0, 1fr))}
+  .goals{grid-template-columns:repeat(2, minmax(0, 1fr))}
+  .two-col,.solar-layout{grid-template-columns:1fr 1fr}
+  .activity-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
+  .summary-list{grid-template-columns:repeat(2, minmax(0, 1fr));gap:18px}
+}
+@media(min-width:1024px){
+  .summary-list{grid-template-columns:repeat(4, minmax(0, 1fr))}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stars"></div>
+
+  <!-- Slide 0: Cover -->
+  <section class="slide cover active" data-slide="0">
+    <span class="cover-planet earth"></span>
+    <span class="cover-planet saturn"></span>
+    <span class="cover-planet mars"></span>
+    <div class="cover-content">
+      <div class="kicker">🚀 رحلة علمية تفاعلية</div>
+      <h1>الأرض والنظام الشمسي</h1>
+      <div class="subtitle">للتعرّف إلى الشمس والكواكب</div>
+      <p style="margin:16px auto 12px;font-size:16px">استكشف الكواكب، تعرّف إلى أسرارها، ثم اختبر معلوماتك في رحلة فضائية ممتعة.</p>
+      <button class="cta-btn" onclick="go(1)">ابدأ الرحلة 🚀</button>
+    </div>
+  </section>
+
+  <!-- Slide 1: الأهداف -->
+  <section class="slide" data-slide="1">
+    <div class="slide-content-wrapper">
+      <div class="kicker">01 · أهداف الدرس</div>
+      <h2>ماذا سنتعلم اليوم؟</h2>
+      <div class="goals">
+        <div class="goal">🪐 تعريف المجموعة الشمسية تعريفًا مبسطًا.</div>
+        <div class="goal">🌍 تسمية الكواكب الثمانية وترتيبها حسب بعدها عن الشمس.</div>
+        <div class="goal">🔭 التمييز بين الكواكب الداخلية الصخرية والخارجية العملاقة.</div>
+        <div class="goal">✨ مقارنة بعض خصائص الكواكب والمشاركة في الأنشطة.</div>
+      </div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(0)">→ السابق</button><span class="counter">2 / 8</span><button class="foot-btn" onclick="go(2)">التالي ←</button></div>
+  </section>
+
+  <!-- Slide 2: الفكرة الأساسية -->
+  <section class="slide" data-slide="2">
+    <div class="slide-content-wrapper">
+      <div class="kicker">02 · الفكرة الأساسية</div>
+      <h2>ما المجموعة الشمسية؟</h2>
+      <div class="squares-grid">
+        <div class="square-card">
+          <b style="color:var(--gold);font-size:18px;margin-bottom:6px;">المجموعة الشمسية</b>
+          <p style="margin:0;font-size:15px;">هي الشمس وكل ما يرتبط بها بفعل الجاذبية من كواكب وأقمار.</p>
+        </div>
+        <div class="square-card">
+          <b style="color:var(--gold);font-size:18px;margin-bottom:6px;">الشمس العظيمة</b>
+          <p style="margin:0;font-size:15px;">نجم مضيء يقع في المركز ويمد النظام بالضوء والحرارة.</p>
+        </div>
+        <div class="square-card">
+          <b style="color:var(--gold);font-size:18px;margin-bottom:6px;">قوة الجاذبية</b>
+          <p style="margin:0;font-size:15px;">القوة التي تحافظ على حركة الكواكب في مداراتها الثابتة.</p>
+        </div>
+        <div class="square-card" style="background: linear-gradient(140deg,#21174b,#142f53);">
+          <span style="font-size:36px;">☀️🪐</span>
+          <p style="margin:6px 0 0 0;color:var(--teal);font-weight:bold;font-size:15px;">النظام متكامل ورهيب!</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(1)">→ السابق</button><span class="counter">3 / 8</span><button class="foot-btn" onclick="go(3)">التالي ←</button></div>
+  </section>
+
+  <!-- Slide 3: اكتشف الكواكب (تم تكبير صور الكواكب والكروت) -->
+  <section class="slide" data-slide="3">
+    <div class="slide-content-wrapper">
+      <div class="kicker">03 · من الأقرب إلى الأبعد</div>
+      <h2>اضغط على أي كوكب لاكتشافه</h2>
+      <p style="margin-bottom:12px;color:#d7c9ff;text-align:center;font-size:16px;">ستظهر بطاقة تفاصيله وصورته الكبيرة فوراً.</p>
+      <div class="planet-strip" id="planetStrip"></div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(2)">→ السابق</button><span class="counter">4 / 8</span><button class="foot-btn" onclick="go(4)">التالي ←</button></div>
+  </section>
+
+  <!-- Slide 4: تصنيف الكواكب -->
+  <section class="slide" data-slide="4">
+    <div class="slide-content-wrapper">
+      <div class="kicker">04 · تصنيف الكواكب</div>
+      <h2>مجموعتان رئيسيتان من الكواكب</h2>
+      <div class="two-col">
+        <div class="category-card" style="border-right: 5px solid var(--teal);">
+          <h3 style="color:#6edaf0;font-size:20px">الكواكب الداخلية الصخرية</h3>
+          <div class="category-planets-img">
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg')" title="عطارد"></div>
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg')" title="الزهرة"></div>
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg')" title="الأرض"></div>
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg')" title="المريخ"></div>
+          </div>
+          <p style="font-size:16px">قريبة من الشمس، صلبة وصخرية التركيب: <b>عطارد، الزهرة، الأرض، والمريخ</b>.</p>
+        </div>
+
+        <div class="category-card" style="border-right: 5px solid var(--gold);">
+          <h3 style="color:#f4cf70;font-size:20px">الكواكب الخارجية العملاقة</h3>
+          <div class="category-planets-img">
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg')" title="المشتري"></div>
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg')" title="زحل"></div>
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg')" title="أورانوس"></div>
+            <div class="cat-planet" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full_Disk.jpg')" title="نبتون"></div>
+          </div>
+          <p style="font-size:16px">بعيدة عن الشمس، معظمها غازات وسوائل وحجمها عملاق: <b>المشتري، زحل، أورانوس، ونبتون</b>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(3)">→ السابق</button><span class="counter">5 / 8</span><button class="foot-btn" onclick="go(5)">التالي ←</button></div>
+  </section>
+
+  <!-- Slide 5: الأنشطة التفاعلية (خطوط مكبرة وواضحة) -->
+  <section class="slide" data-slide="5">
+    <div class="slide-content-wrapper">
+      <div class="kicker">05 · الأنشطة والتفاعل</div>
+      <h2>اختبر تفكيرك الفضائي</h2>
+      <div class="activity-grid">
+        <div class="activity">
+          <h3>1. أقرب كوكب للشمس</h3>
+          <p>ما هو الكوكب الأقرب للشمس؟</p>
+          <select id="q1" onchange="checkQ1()">
+            <option value="">اختر الإجابة</option>
+            <option value="mercury">عطارد</option>
+            <option value="venus">الزهرة</option>
+            <option value="earth">الأرض</option>
+          </select>
+          <div class="feedback" id="fb1"></div>
+        </div>
+
+        <div class="activity">
+          <h3>2. أكبر الكواكب حجماً</h3>
+          <p>ما هو أكبر كوكب في نظامنا؟</p>
+          <select id="q2" onchange="checkQ2()">
+            <option value="">اختر الإجابة</option>
+            <option value="mars">المريخ</option>
+            <option value="jupiter">المشتري</option>
+            <option value="saturn">زحل</option>
+          </select>
+          <div class="feedback" id="fb2"></div>
+        </div>
+
+        <div class="activity">
+          <h3>3. الكوكب الأحمر</h3>
+          <p>أي كوكب يُعرف بـ "الكوكب الأحمر"؟</p>
+          <select id="q3" onchange="checkQ3()">
+            <option value="">اختر الإجابة</option>
+            <option value="mars">المريخ</option>
+            <option value="earth">الأرض</option>
+            <option value="neptune">نبتون</option>
+          </select>
+          <div class="feedback" id="fb3"></div>
+        </div>
+
+        <div class="activity">
+          <h3>4. كوكب الحلقات</h3>
+          <p>ما الكوكب المتميز بحلقاته الرائعة؟</p>
+          <select id="q4" onchange="checkQ4()">
+            <option value="">اختر الإجابة</option>
+            <option value="saturn">زحل</option>
+            <option value="uranus">أورانوس</option>
+            <option value="mercury">عطارد</option>
+          </select>
+          <div class="feedback" id="fb4"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(4)">→ السابق</button><span class="counter">6 / 8</span><button class="foot-btn" onclick="go(6)">التالي ←</button></div>
+  </section>
+
+  <!-- Slide 6: التقويم (خطوط مكبرة وواضحة) -->
+  <section class="slide" data-slide="6">
+    <div class="slide-content-wrapper">
+      <div class="kicker">06 · التقويم</div>
+      <h2>اختبار ذكاء سريع</h2>
+      <div class="panel">
+        <div class="quiz-q">
+          <p><b>1. كم عدد كواكب المجموعة الشمسية الرئيسية؟</b></p>
+          <label><input type="radio" name="r1" value="a"> 7 كواكب</label>
+          <label><input type="radio" name="r1" value="b" id="r1-correct"> 8 كواكب</label>
+          <label><input type="radio" name="r1" value="c"> 9 كواكب</label>
+        </div>
+        <hr style="border-color:rgba(255,255,255,0.15);margin:12px 0;">
+        <div class="quiz-q">
+          <p><b>2. الكواكب الخارجية تتكون معظمها من غازات وسوائل:</b></p>
+          <label><input type="radio" name="r2" value="true" id="r2-correct"> عبارة صحيحة ✔️</label>
+          <label><input type="radio" name="r2" value="false"> عبارة خاطئة ✖️</label>
+        </div>
+        <hr style="border-color:rgba(255,255,255,0.15);margin:12px 0;">
+        <div class="quiz-q">
+          <p><b>3. ما هو الكوكب الذي يُعرف بتوأم الأرض من حيث الحجم والحرارة؟</b></p>
+          <label><input type="radio" name="r3" value="a" id="r3-correct"> الزهرة</label>
+          <label><input type="radio" name="r3" value="b"> المريخ</label>
+          <label><input type="radio" name="r3" value="c"> عطارد</label>
+        </div>
+        <button class="cta-btn" style="width:100%;margin-top:16px;max-width:none;font-size:19px" onclick="gradeQuiz()">تصحيح الإجابات 🌟</button>
+        <div class="feedback" id="quizFeedback" style="text-align:center;font-size:18px;"></div>
+      </div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(5)">→ السابق</button><span class="counter">7 / 8</span><button class="foot-btn" onclick="go(7)">التالي ←</button></div>
+  </section>
+
+  <!-- Slide 7: الخاتمة -->
+  <section class="slide" data-slide="7">
+    <div class="slide-content-wrapper">
+      <div class="kicker">07 · الخاتمة</div>
+      <h2>ماذا تعلمنا اليوم؟</h2>
+      <div class="summary-list">
+        <div class="summary-square">
+          <span class="summary-icon">🪐</span>
+          المجموعة الشمسية تدور حول الشمس بفعل الجاذبية.
+        </div>
+        <div class="summary-square">
+          <span class="summary-icon">🌍</span>
+          يبلغ عدد الكواكب الرئيسية ثمانية كواكب منظمة في مدارات.
+        </div>
+        <div class="summary-square">
+          <span class="summary-icon">🔭</span>
+          تنقسم إلى كواكب صخرية داخلية وعملاقة غازية خارجية.
+        </div>
+        <div class="summary-square">
+          <span class="summary-icon">🚀</span>
+          العلم والفضاء مليئان بالأسرار المشوقة للاستكشاف!
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><button class="foot-btn" onclick="go(6)">→ السابق</button><span class="counter">8 / 8</span><button class="foot-btn" onclick="go(0)">العودة للبداية ⟲</button></div>
+  </section>
+</div>
+
+<!-- Modal Dialog for Planet Details (الكوكب والخط مكبرين جداً وواضحين) -->
+<div class="modal" id="planetModal" onclick="closeModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="close" onclick="closeModalBtn()">&times;</button>
+    <div class="modal-planet"><div class="planet" id="modalPlanetVisual"></div></div>
+    <div class="modal-text">
+      <h2 id="modalTitle">عنوان الكوكب</h2>
+      <p id="modalDesc">وصف تفصيلي عن الكوكب وخصائصه الفريدة.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const planets = [
+  {id:'mercury', name:'عطارد', img:'https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg', desc:'أصغر كواكب المجموعة الشمسية وأقربها إلى الشمس. سطحُه صخري مليء بالفوهات البركانية وشديد الحرارة.'},
+  {id:'venus', name:'الزهرة', img:'https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg', desc:'أكثر الكواكب سخونةً في نظامنا الشمسي بسبب غلافه الجوي الكثيف الذي يحبس الحرارة.'},
+  {id:'earth', name:'الأرض', img:'https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg', desc:'كوكبنا الرائع الذي يتميز بوجود الماء السائل والحياة والغلاف الجوي الملائم.'},
+  {id:'mars', name:'المريخ', img:'https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg', desc:'المعروف بالكوكب الأحمر بسبب أكسيد الحديد (الصدأ) المنتشر على سطحه.'},
+  {id:'jupiter', name:'المشتري', img:'https://upload.wikimedia.org/wikipedia/commons/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg', desc:'أكبر كواكب المجموعة الشمسية حجمًا، وهو عملاق غازي يشتهر ببقعته الحمراء العظيمة.'},
+  {id:'saturn', name:'زحل', img:'https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg', desc:'يتميز بحلقات خلابة وواسعة تتكون من الجليد والصخور.'},
+  {id:'uranus', name:'أورانوس', img:'https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg', desc:'عملاق جليدي ذو لون أزرق مخضر فريد، ويميل على جانبه أثناء دورانه.'},
+  {id:'neptune', name:'نبتون', img:'https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full_Disk.jpg', desc:'أبعد الكواكب الرئيسية عن الشمس، ويتميز برياحه العاتية ولونه الأزرق العميق.'}
+];
+
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+
+function go(n) {
+  slides[currentSlide].classList.remove('active');
+  currentSlide = n;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+const strip = document.getElementById('planetStrip');
+if (strip) {
+  planets.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'planet-card';
+    card.innerHTML = `<span class="planet" style="background-image: url('${p.img}')"></span><span class="grid-label">${p.name}</span>`;
+    card.onclick = () => openModal(p);
+    strip.appendChild(card);
+  });
+}
+
+function openModal(p) {
+  document.getElementById('modalTitle').innerText = p.name;
+  document.getElementById('modalDesc').innerText = p.desc;
+  const viz = document.getElementById('modalPlanetVisual');
+  viz.style.backgroundImage = `url('${p.img}')`;
+  document.getElementById('planetModal').classList.add('open');
+}
+
+function closeModal(e) {
+  if(e.target.id === 'planetModal') closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('planetModal').classList.remove('open');
+}
+
+function checkQ1() {
+  const val = document.getElementById('q1').value;
+  const fb = document.getElementById('fb1');
+  if(val === 'mercury') { fb.innerText = '✨ إجابة صحيحة! عطارد هو الأقرب.'; fb.style.color = 'var(--gold)'; }
+  else if(val) { fb.innerText = '❌ حاول مرة أخرى!'; fb.style.color = '#ff8e8e'; }
+  else { fb.innerText = ''; }
+}
+
+function checkQ2() {
+  const val = document.getElementById('q2').value;
+  const fb = document.getElementById('fb2');
+  if(val === 'jupiter') { fb.innerText = '✨ رائع! المشتري هو الأكبر.'; fb.style.color = 'var(--gold)'; }
+  else if(val) { fb.innerText = '❌ خطأ، حاول مجددًا.'; fb.style.color = '#ff8e8e'; }
+  else { fb.innerText = ''; }
+}
+
+function checkQ3() {
+  const val = document.getElementById('q3').value;
+  const fb = document.getElementById('fb3');
+  if(val === 'mars') { fb.innerText = '✨ ممتاز! المريخ هو الكوكب الأحمر.'; fb.style.color = 'var(--gold)'; }
+  else if(val) { fb.innerText = '❌ ليست صحيحة، حاول مجدداً.'; fb.style.color = '#ff8e8e'; }
+  else { fb.innerText = ''; }
+}
+
+function checkQ4() {
+  const val = document.getElementById('q4').value;
+  const fb = document.getElementById('fb4');
+  if(val === 'saturn') { fb.innerText = '✨ أحسنت! زحل هو كوكب الحلقات.'; fb.style.color = 'var(--gold)'; }
+  else if(val) { fb.innerText = '❌ خيار غير صحيح.'; fb.style.color = '#ff8e8e'; }
+  else { fb.innerText = ''; }
+}
+
+function gradeQuiz() {
+  const q1Correct = document.getElementById('r1-correct').checked;
+  const q2Correct = document.getElementById('r2-correct').checked;
+  const q3Correct = document.getElementById('r3-correct').checked;
+  const fb = document.getElementById('quizFeedback');
+  
+  let correctCount = (q1Correct?1:0) + (q2Correct?1:0) + (q3Correct?1:0);
+  
+  if(correctCount === 3) {
+    fb.innerText = '🎉 ممتاز جداً! جميع إجاباتك صحيحة (3/3 - 100%).';
+    fb.style.color = 'var(--gold)';
+  } else if(correctCount > 0) {
+    fb.innerText = `👍 جيد جداً! لديك (${correctCount}/3) إجابات صحيحة، حاول مجدداً للحصول على العلامة الكاملة.`;
+    fb.style.color = 'var(--teal)';
+  } else {
+    fb.innerText = '⚠️ حاول مراجعة الشرائح السابقة وإعادة المحاولة.';
+    fb.style.color = '#ff8e8e';
+  }
+}
+</script>
+</body>
+</html>
